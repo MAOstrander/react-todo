@@ -1,39 +1,42 @@
 "use strict";
 
-const React = require('react');
-const ReactDOM = require('react-dom');
+// const React = require('react');
+// const blarg = require('react-dom');
+import blargh from "react";
+console.log(">", blargh);
 
+class TodoItem extends React.Component {
+  render () {
+    let props = this.props;
+    return (
+      <div className="todo-item">
+        <input type="checkbox" />
+        <div className="label">{props.label}</div>
+        <button className="delete-btn">&times;</button>
+      </div>
+    )
+  }
+}
 
-// var Hello = React.createClass({
-//   displayName: 'Hello',
-//   render: function() {
-//     return React.createElement("div", null, "Hello ", this.props.name);
-//   }
-// });
-
-
-// ReactDOM.render(
-//   React.createElement(Hello, {name: "World"}),
-//   document.getElementById('output')
-// );
-
-// var Hello = React.createClass({
-//   render: function() {
-//     return <div>Hello {this.props.name}</div>;
-//   }
-// });
-
-// ReactDOM.render(
-//   <Hello name="World" />,
-//   document.getElementById('container')
-// );
+const AddTodo = (props) => {
+    return (
+      <div className="add-todo">
+        <input type="text" placeholder={props.placeholder} />
+      </div>
+    )
+}
 
 const TodoApp = (props) => {
   return (
     <div className="todo-app">
-      Todo app.
+      <AddTodo placeholder="What to do?" />
+      <TodoItem label="Work on codetest" />
+      <TodoItem label="Grade quizzes" />
+      <TodoItem label="Unpack from vacation" />
     </div>
   )
 };
 
+
 ReactDOM.render(<TodoApp />, document.getElementById('output'));
+
