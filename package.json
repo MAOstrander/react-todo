@@ -19,7 +19,12 @@
   },
   "homepage": "https://github.com/MAOstrander/react-todo#readme",
   "devDependencies": {
-    "nodemon": "^1.9.2"
+    "babel-preset-react": "^6.11.1",
+    "babelify": "^7.3.0",
+    "browserify": "^13.0.1",
+    "gulp": "^3.9.1",
+    "nodemon": "^1.9.2",
+    "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
     "express": "^4.14.0",
