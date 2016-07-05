@@ -30,6 +30,27 @@ app.use(bodyParser.json() );
 
 // Break this out into a new file soon
 const Task = require('./model/task');
+app.get('/api/comments', (req, res) => {
+
+  Task.find().exec( (err, doc) => {
+    if (err) throw err;
+
+    const TODOS = [
+      {id: 1, label: 'Learn React', completed: false},
+      {id: 2, label: 'Build a todo', completed: false},
+      {id: 3, label: 'TESTING!', completed: false}
+    ];
+    if (doc) {
+      console.log("doc", doc);
+
+
+      res.send(doc);
+    } else {
+      res.send(TODOS);
+    }
+  });
+});
+
 app.get('/', (req, res) => {
 
   const myTest = new Task({

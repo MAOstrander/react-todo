@@ -99,6 +99,30 @@ const TodoList = (props) => {
 }
 
 class TodoApp extends React.Component {
+  componentDidMount() {
+
+    fetch(`/api/comments`)
+    .then((response) =>{
+      return response.json();
+    })
+    .then((parsedTodo)=>{
+
+      parsedTodo.forEach((task)=>{
+        task.id = task._id;
+      })
+      console.log("thing ???", parsedTodo);
+      this.onUpdate(parsedTodo);
+    })
+
+    // let askTodo = new XMLHttpRequest();
+    console.log("HELLO!!!!!!!");
+
+    // askTodo.open("GET", `/api/comments`);
+    // askTodo.send();
+    // askTodo.addEventListener("load", this.runAfterRequestLoads);
+    // askTodo.addEventListener("error", this.errorIfRequestFails);
+  }
+
   constructor(props) {
     super(props);
 
@@ -110,6 +134,7 @@ class TodoApp extends React.Component {
     this.onItemEdit = this.onItemEdit.bind(this);
     this.onItemDelete = this.onItemDelete.bind(this);
     this.onItemToggle = this.onItemToggle.bind(this);
+    this.onUpdate = this.onUpdate.bind(this);
   }
 
   render () {
@@ -124,6 +149,12 @@ class TodoApp extends React.Component {
                   onItemDelete={this.onItemDelete} />
       </div>
     );
+  }
+
+  onUpdate(loadedTodos) {
+    this.setState({
+      todos: loadedTodos
+    })
   }
 
   onAdd(todo) {
@@ -167,6 +198,24 @@ class TodoApp extends React.Component {
     this.setState({
       todos: todos
     });
+  }
+
+  runAfterRequestLoads(rawTodo) {
+    if (rawTodo.target.status === 200) {
+      var parsedTodo = JSON.parse(rawTodo.currentTarget.responseText)
+      parsedTodo.forEach((task)=>{
+        console.log("thing >>>", task);
+        task.id = task._id;
+      })
+        console.log("thing >>>", parsedTodo);
+        TodoApp.onUpdate(parsedTodo)
+    } else {
+      alert("We're sorry, something went wrong");
+    }
+  }
+
+  errorIfRequestFails(errorData) {
+    alert("Sorry, something went wrong with the request", errorData);
   }
 }
 
