@@ -1,0 +1,41 @@
+* {
+  box-sizing: border-box;
+}
+
+/*Main app body*/
+.todo-app {
+  background: #fff;
+  margin: 20px auto;
+  width: 500px;
+  border: 2px solid black;
+}
+
+/*Input field*/
+.add-todo input {
+  padding: 8px;
+  font-size: 30px;
+  width: 100%;
+}
+
+/*Individual Items*/
+.todo-item input,
+.todo-item .label {
+  float: left;
+  margin: 15px;
+}
+
+.todo-item .label {
+  width: 75%;
+}
+
+.todo-item .delete-btn {
+  margin: 15px;
+  float: right;
+}
+
+/*Frustrating Float Fix*/
+.todo-item::after {
+  content: "";
+  clear: both;
+  display: block;
+}
