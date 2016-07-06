@@ -33,8 +33,6 @@
     "body-parser": "^1.15.2",
     "bower": "^1.7.9",
     "express": "^4.14.0",
-    "mongoose": "^4.5.3",
-    "react": "^15.2.0",
-    "react-dom": "^15.2.0"
+    "mongoose": "^4.5.3"
   }
 }
