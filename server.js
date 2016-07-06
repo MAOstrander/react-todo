@@ -65,6 +65,28 @@ app.post('/api/add', (req, res) => {
 
 });
 
+///
+app.post('/api/edit', (req, res) => {
+  let searchID = req.body.idToEdit;
+  let upKey = req.body.updateKey;
+  let upValue = req.body.updateValue;
+  upValue = upValue === 'true' ? true : upValue;
+
+  Task.findOne({"_id":searchID}, (err, doc) => {
+    if (err) throw err;
+
+    if(doc) {
+      doc[upKey] = upValue;
+      doc.save();
+
+      res.send(doc);
+    } else {
+      res.send("Whoops, the update failed");
+    }
+
+  })
+})
+
 app.delete('/api/delete', (req, res) => {
   let searchID = req.body.idToDelete;
   console.log("ID TO REMOVE", req.body.idToDelete);

@@ -105,10 +105,6 @@ class TodoApp extends React.Component {
       return response.json();
     })
     .then((parsedTodo)=>{
-      parsedTodo.forEach((task)=>{
-        task.id = task._id;
-      })
-
       this.onUpdate(parsedTodo);
     })
   }
@@ -125,6 +121,7 @@ class TodoApp extends React.Component {
     this.onItemDelete = this.onItemDelete.bind(this);
     this.onItemToggle = this.onItemToggle.bind(this);
     this.onUpdate = this.onUpdate.bind(this);
+    this.sendUpdate = this.sendUpdate.bind(this);
   }
 
   render () {
@@ -142,8 +139,25 @@ class TodoApp extends React.Component {
   }
 
   onUpdate(loadedTodos) {
+    loadedTodos.forEach((task)=>{
+        task.id = task._id;
+      })
     this.setState({
       todos: loadedTodos
+    })
+  }
+
+  sendUpdate(idToEdit, updateKey, updateValue) {
+    $.ajax({
+      url: `/api/edit`,
+      type: 'POST',
+      data: {idToEdit, updateKey, updateValue},
+      success: function (data, status, xhr) {
+        console.log("success", data);
+      }.bind(this),
+      error: function (xhr, status, error) {
+        console.log("failure", error);
+      }.bind(this)
     })
   }
 
@@ -195,10 +209,15 @@ class TodoApp extends React.Component {
   }
 
   onItemToggle(itemId) {
+    let currentState = this;
     let todos = this.state.todos;
     todos = todos.map(function (todo) {
-      return todo.id !== itemId ?
-        todo : Object.assign({}, todo, {completed: !todo.completed});
+      if (todo.id !== itemId) {
+        return todo;
+      } else {
+        currentState.sendUpdate(itemId, 'completed', !todo.completed);
+        return Object.assign({}, todo, {completed: !todo.completed});
+      }
     });
     console.log("todos", todos);
 
