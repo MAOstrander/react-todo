@@ -177,8 +177,15 @@ class TodoApp extends React.Component {
   }
 
   onItemEdit(itemId, text) {
-    let todos = this.state.todos.map(function (todo) {
-      return todo.id !== itemId ? todo : Object.assign({}, todo, {label: text});
+    let currentState = this;
+    let todos = this.state.todos;
+    todos = todos.map(function (todo) {
+      if (todo.id !== itemId) {
+        return todo;
+      } else {
+        currentState.sendUpdate(itemId, 'label', text);
+        return Object.assign({}, todo, {label: text});
+      }
     });
 
     this.setState({
