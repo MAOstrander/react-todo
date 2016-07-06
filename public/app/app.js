@@ -6,6 +6,8 @@ const TODOS = [
   {id: 0, label: 'Why not add a todo?', completed: false}
 ];
 
+console.log("JQUERY?", $)
+
 const AddTodo = (props) => {
     return (
       <div className="add-todo">
@@ -150,24 +152,36 @@ class TodoApp extends React.Component {
 
     console.log("Hello from onAdd", todo);
 
+    //
+      $.ajax({
+        url: `/api/add`,
+        type: 'POST',
+        data: todo,
+        success: function (data, status, xhr) {
+          console.log("success", data);
+        }.bind(this),
+        error: function (xhr, status, error) {
+          console.log("failure", error);
+        }.bind(this)
+      })
+    //
 
+    // var data = new FormData();
+    // data.append( "json", JSON.stringify( {"label": todo.label, "completed": todo.completed} ) );
 
-    var data = new FormData();
-    data.append( "json", JSON.stringify( {"label": todo.label, "completed": todo.completed} ) );
+    // console.log("data", data);
 
-    console.log("data", data);
-
-    fetch(`/api/add`, {
-      method: 'POST',
-      body: data
-    })
-    .then((response) =>{
-      console.log("response", response);
-      return response.json();
-    })
-    .then((parsedTodo)=>{
-      console.log("parsedTodo", parsedTodo);
-    })
+    // fetch(`/api/add`, {
+    //   method: 'POST',
+    //   body: data
+    // })
+    // .then((response) =>{
+    //   console.log("response", response);
+    //   return response.json();
+    // })
+    // .then((parsedTodo)=>{
+    //   console.log("parsedTodo", parsedTodo);
+    // })
     todo.id = todos.length + 1;
     this.setState({
       todos: [

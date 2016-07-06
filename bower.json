@@ -1,0 +1,21 @@
+{
+  "name": "react-todo",
+  "description": "It is built with React that has an API and uses some persistent database",
+  "main": "server.js",
+  "authors": [
+    "Mathew Ostrander <mathew.ostrander@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/MAOstrander/react-todo",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "react": "^15.2.0",
+    "bootstrap": "^3.3.6"
+  }
+}
