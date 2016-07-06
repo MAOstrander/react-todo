@@ -148,47 +148,18 @@ class TodoApp extends React.Component {
   }
 
   onAdd(todo) {
-    let todos = this.state.todos;
-
-    console.log("Hello from onAdd", todo);
-
-    //
-      $.ajax({
-        url: `/api/add`,
-        type: 'POST',
-        data: todo,
-        success: function (data, status, xhr) {
-          console.log("success", data);
-        }.bind(this),
-        error: function (xhr, status, error) {
-          console.log("failure", error);
-        }.bind(this)
-      })
-    //
-
-    // var data = new FormData();
-    // data.append( "json", JSON.stringify( {"label": todo.label, "completed": todo.completed} ) );
-
-    // console.log("data", data);
-
-    // fetch(`/api/add`, {
-    //   method: 'POST',
-    //   body: data
-    // })
-    // .then((response) =>{
-    //   console.log("response", response);
-    //   return response.json();
-    // })
-    // .then((parsedTodo)=>{
-    //   console.log("parsedTodo", parsedTodo);
-    // })
-    todo.id = todos.length + 1;
-    this.setState({
-      todos: [
-        todo,
-        ...todos
-      ]
-    });
+    $.ajax({
+      url: `/api/add`,
+      type: 'POST',
+      data: todo,
+      success: function (data, status, xhr) {
+        console.log("success", data);
+        this.onUpdate(data);
+      }.bind(this),
+      error: function (xhr, status, error) {
+        console.log("failure", error);
+      }.bind(this)
+    })
   }
 
   onItemEdit(itemId, text) {
@@ -202,6 +173,18 @@ class TodoApp extends React.Component {
   }
 
   onItemDelete(itemId) {
+    $.ajax({
+      url: `/api/delete`,
+      type: 'DELETE',
+      data: {"idToDelete": itemId},
+      success: function (data, status, xhr) {
+        console.log("success", data);
+        // this.onUpdate(data);
+      }.bind(this),
+      error: function (xhr, status, error) {
+        console.log("failure", error);
+      }.bind(this)
+    })
     let todos = this.state.todos.filter(function (todo) {
       return todo.id !== itemId;
     });
@@ -212,10 +195,12 @@ class TodoApp extends React.Component {
   }
 
   onItemToggle(itemId) {
-    let todos = this.state.todos.map(function (todo) {
+    let todos = this.state.todos;
+    todos = todos.map(function (todo) {
       return todo.id !== itemId ?
         todo : Object.assign({}, todo, {completed: !todo.completed});
     });
+    console.log("todos", todos);
 
     this.setState({
       todos: todos

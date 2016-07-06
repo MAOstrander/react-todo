@@ -30,8 +30,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Break this out into a new file soon
 const Task = require('./model/task');
-app.get('/api/comments', (req, res) => {
 
+function getTasks(req, res) {
   Task.find().exec( (err, doc) => {
     if (err) throw err;
 
@@ -39,33 +39,45 @@ app.get('/api/comments', (req, res) => {
       {id: 0, label: 'Whoops, someone disconnected the database!', completed: false}
     ];
     if (doc) {
-      console.log("doc", doc);
-
       res.send(doc);
     } else {
       res.send(whoops);
     }
   });
+}
+
+app.get('/api/comments', (req, res) => {
+  getTasks(req, res);
 });
 
 app.post('/api/add', (req, res) => {
 
-  console.log(">>>>>>>>>", req);
   const myTest = new Task({
-    label: "Testing",
-    completed: false
+    label: req.body.label,
+    completed: req.body.completed
   });
 
-  console.log("myTest", myTest);
+  myTest.save( (err) => {
+    if (err) throw err;
 
-  // myTest.save( (err) => {
-  //   if (err) throw err;
-
-  // });
-  res.send(myTest)
+    getTasks(req, res);
+  });
 
 });
 
+app.delete('/api/delete', (req, res) => {
+  let searchID = req.body.idToDelete;
+  console.log("ID TO REMOVE", req.body.idToDelete);
+  Task.remove( {"_id": searchID}, (err, doc) => {
+    if (err) throw err;
+
+    if (doc) {
+      res.send(doc);
+    } else {
+      res.send(err);
+    }
+  })
+});
 
 mongoose.connect(MONGO_URL);
 mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
