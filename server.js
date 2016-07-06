@@ -20,12 +20,12 @@ const MONGODB_URL_PREFIX = MONGODB_USER
 const MONGO_URL = `mongodb://${MONGODB_URL_PREFIX}${MONGODB_HOST}:${MONGODB_PORT}/todo`;
 
 // app.set('view engine', 'html');
-app.use(express.static(path.join(__dirname, 'public')));
 // app.use(express.static('public'));
 
 app.use(bodyParser.urlencoded( {extended: false} ));
 app.use(bodyParser.json() );
 
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 // Break this out into a new file soon
@@ -35,24 +35,22 @@ app.get('/api/comments', (req, res) => {
   Task.find().exec( (err, doc) => {
     if (err) throw err;
 
-    const TODOS = [
-      {id: 1, label: 'Learn React', completed: false},
-      {id: 2, label: 'Build a todo', completed: false},
-      {id: 3, label: 'TESTING!', completed: false}
+    const whoops = [
+      {id: 0, label: 'Whoops, someone disconnected the database!', completed: false}
     ];
     if (doc) {
       console.log("doc", doc);
 
-
       res.send(doc);
     } else {
-      res.send(TODOS);
+      res.send(whoops);
     }
   });
 });
 
-app.get('/', (req, res) => {
+app.post('/api/add', (req, res) => {
 
+  console.log(">>>>>>>>>", req);
   const myTest = new Task({
     label: "Testing",
     completed: false
@@ -60,13 +58,11 @@ app.get('/', (req, res) => {
 
   console.log("myTest", myTest);
 
-  myTest.save( (err) => {
-    if (err) throw err;
+  // myTest.save( (err) => {
+  //   if (err) throw err;
 
-
-    res.sendFile('/index.html');
-
-  });
+  // });
+  res.send(myTest)
 
 });
 

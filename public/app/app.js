@@ -3,9 +3,7 @@
 // const ReactDOM = require('react-dom');
 
 const TODOS = [
-  {id: 1, label: 'Learn React', completed: false},
-  {id: 2, label: 'Build a todo', completed: false},
-  {id: 3, label: 'TESTING!', completed: false}
+  {id: 0, label: 'Why not add a todo?', completed: false}
 ];
 
 const AddTodo = (props) => {
@@ -100,27 +98,17 @@ const TodoList = (props) => {
 
 class TodoApp extends React.Component {
   componentDidMount() {
-
     fetch(`/api/comments`)
     .then((response) =>{
       return response.json();
     })
     .then((parsedTodo)=>{
-
       parsedTodo.forEach((task)=>{
         task.id = task._id;
       })
-      console.log("thing ???", parsedTodo);
+
       this.onUpdate(parsedTodo);
     })
-
-    // let askTodo = new XMLHttpRequest();
-    console.log("HELLO!!!!!!!");
-
-    // askTodo.open("GET", `/api/comments`);
-    // askTodo.send();
-    // askTodo.addEventListener("load", this.runAfterRequestLoads);
-    // askTodo.addEventListener("error", this.errorIfRequestFails);
   }
 
   constructor(props) {
@@ -160,6 +148,26 @@ class TodoApp extends React.Component {
   onAdd(todo) {
     let todos = this.state.todos;
 
+    console.log("Hello from onAdd", todo);
+
+
+
+    var data = new FormData();
+    data.append( "json", JSON.stringify( {"label": todo.label, "completed": todo.completed} ) );
+
+    console.log("data", data);
+
+    fetch(`/api/add`, {
+      method: 'POST',
+      body: data
+    })
+    .then((response) =>{
+      console.log("response", response);
+      return response.json();
+    })
+    .then((parsedTodo)=>{
+      console.log("parsedTodo", parsedTodo);
+    })
     todo.id = todos.length + 1;
     this.setState({
       todos: [
@@ -198,24 +206,6 @@ class TodoApp extends React.Component {
     this.setState({
       todos: todos
     });
-  }
-
-  runAfterRequestLoads(rawTodo) {
-    if (rawTodo.target.status === 200) {
-      var parsedTodo = JSON.parse(rawTodo.currentTarget.responseText)
-      parsedTodo.forEach((task)=>{
-        console.log("thing >>>", task);
-        task.id = task._id;
-      })
-        console.log("thing >>>", parsedTodo);
-        TodoApp.onUpdate(parsedTodo)
-    } else {
-      alert("We're sorry, something went wrong");
-    }
-  }
-
-  errorIfRequestFails(errorData) {
-    alert("Sorry, something went wrong with the request", errorData);
   }
 }
 
