@@ -1,12 +1,8 @@
 "use strict";
-// const React = require('react');
-// const ReactDOM = require('react-dom');
 
 const TODOS = [
   {id: 0, label: 'Why not add a todo?', completed: false}
 ];
-
-console.log("JQUERY?", $)
 
 const AddTodo = (props) => {
     return (
@@ -153,7 +149,7 @@ class TodoApp extends React.Component {
       type: 'POST',
       data: {idToEdit, updateKey, updateValue},
       success: function (data, status, xhr) {
-        console.log("success", data);
+
       }.bind(this),
       error: function (xhr, status, error) {
         console.log("failure", error);
@@ -167,7 +163,6 @@ class TodoApp extends React.Component {
       type: 'POST',
       data: todo,
       success: function (data, status, xhr) {
-        console.log("success", data);
         this.onUpdate(data);
       }.bind(this),
       error: function (xhr, status, error) {
@@ -199,8 +194,6 @@ class TodoApp extends React.Component {
       type: 'DELETE',
       data: {"idToDelete": itemId},
       success: function (data, status, xhr) {
-        console.log("success", data);
-        // this.onUpdate(data);
       }.bind(this),
       error: function (xhr, status, error) {
         console.log("failure", error);
@@ -226,7 +219,6 @@ class TodoApp extends React.Component {
         return Object.assign({}, todo, {completed: !todo.completed});
       }
     });
-    console.log("todos", todos);
 
     this.setState({
       todos: todos
