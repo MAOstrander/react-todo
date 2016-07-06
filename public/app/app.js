@@ -96,7 +96,7 @@ const TodoList = (props) => {
 
 class TodoApp extends React.Component {
   componentDidMount() {
-    fetch(`/api/comments`)
+    fetch(`/api/init`)
     .then((response) =>{
       return response.json();
     })
