@@ -33,26 +33,26 @@ class TodoItem extends React.Component {
     let props = this.props;
 
     let label = (
-      <div className="label" onClick={() => {
-          this.setState({editing: true});
-        }}>{props.label}</div>
-      );
+      <div className="label" onClick={(e) => {
+        this.setState({editing: true});
+      }}>{props.label}</div>
+    );
 
     if (this.state.editing) {
-        label = <input type="text" defaultValue={props.label} onBlur={(e) => {
-          let text = e.target.value;
-          if (!text) {
-            e.target.value = props.label;
-          }
-          props.onItemEdit(props.id, text);
+      label = <input type="text" defaultValue={props.label} onBlur={(e) => {
+        let text = e.target.value;
+        if (!text) {
+          e.target.value = props.label;
+        }
+        props.onItemEdit(props.id, text);
+        this.setState({editing: false});
+      }}
+      onKeyPress={(e) => {
+        if (e.charCode === 13) {
+          props.onItemEdit(props.id, e.target.value);
           this.setState({editing: false});
-        }}
-        onKeyPress={(e) => {
-          if (e.charCode === 13) {
-            props.onItemEdit(props.id, e.target.value);
-            this.setState({editing: false});
-          }
-        }}/>
+        }
+      }}/>
     }
 
     return (
@@ -125,7 +125,7 @@ class TodoApp extends React.Component {
 
     return (
       <div className="todo-app">
-        <AddTodo onAdd={this.onAdd} placeholder="Enter a to do item" />
+        <AddTodo onAdd={this.onAdd} placeholder="Enter a to-do item" />
         <TodoList todos={todos}
                   onItemToggle={this.onItemToggle}
                   onItemEdit={this.onItemEdit}
@@ -149,7 +149,6 @@ class TodoApp extends React.Component {
       type: 'POST',
       data: {idToEdit, updateKey, updateValue},
       success: function (data, status, xhr) {
-
       }.bind(this),
       error: function (xhr, status, error) {
         console.log("failure", error);
