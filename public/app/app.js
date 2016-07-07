@@ -1,9 +1,10 @@
 "use strict";
-
+// Default task, is replaced by what's in the database
 const TODOS = [
   {id: 0, label: 'Why not add a todo?', completed: false}
 ];
 
+// Input Component at top of app. Enter new todos here!
 const AddTodo = (props) => {
     return (
       <div className="add-todo">
@@ -21,6 +22,7 @@ const AddTodo = (props) => {
     )
 }
 
+// This is the class for each individual Todo Item
 class TodoItem extends React.Component {
   constructor(props) {
     super(props);
@@ -29,7 +31,9 @@ class TodoItem extends React.Component {
       editing: false
     };
   }
-  render () {
+
+  // This renders a different label depending on whether you clicked on the task to edit it or not, controlled by the 'editing' flag
+  render() {
     let props = this.props;
 
     let label = (
@@ -38,6 +42,7 @@ class TodoItem extends React.Component {
       }}>{props.label}</div>
     );
 
+    // Changes are saved either onBlur or when the 'enter' key is pressed
     if (this.state.editing) {
       label = <input type="text" defaultValue={props.label} onBlur={(e) => {
         let text = e.target.value;
@@ -55,6 +60,7 @@ class TodoItem extends React.Component {
       }}/>
     }
 
+    // This displays a checkbox, the label depending on the edit state, then the delete button
     return (
       <div className="todo-item">
         <input type="checkbox" checked={props.completed} onChange={() => {
@@ -74,9 +80,11 @@ class TodoItem extends React.Component {
   }
 }
 
+// This is the the list of todos, displaying a TodoItem for each todo
 const TodoList = (props) => {
   let todos = props.todos;
 
+  // Make sure the properties are passed on for each item
   return (
     <div className="todo-list">
       {
@@ -94,7 +102,9 @@ const TodoList = (props) => {
   )
 }
 
+// These control the functionality for the app as a whole
 class TodoApp extends React.Component {
+  // Built in function that runs once the component renders
   componentDidMount() {
     fetch(`/api/init`)
     .then((response) =>{
@@ -106,12 +116,14 @@ class TodoApp extends React.Component {
   }
 
   constructor(props) {
-    super(props);
+    super(props); // Pass properties up to the React.Component constructor
 
+    // Initial state, will ge replaced once componentDidMount runs
     this.state = {
       todos: TODOS
     };
 
+    // Bind 'this' for the functions
     this.onAdd = this.onAdd.bind(this);
     this.onItemEdit = this.onItemEdit.bind(this);
     this.onItemDelete = this.onItemDelete.bind(this);
@@ -120,9 +132,10 @@ class TodoApp extends React.Component {
     this.sendUpdate = this.sendUpdate.bind(this);
   }
 
-  render () {
+  render() {
     let { todos } = this.state;
 
+    // Settle on final structure of the app
     return (
       <div className="todo-app">
         <AddTodo onAdd={this.onAdd} placeholder="Enter a to-do item" />
@@ -134,6 +147,7 @@ class TodoApp extends React.Component {
     );
   }
 
+  // Instead of creating new ids, I assigned the unique ids from the database once the list of todos are loaded
   onUpdate(loadedTodos) {
     loadedTodos.forEach((task)=>{
         task.id = task._id;
@@ -143,6 +157,7 @@ class TodoApp extends React.Component {
     })
   }
 
+  // This takes a todo by the id, as well as a key or value to update in the database.
   sendUpdate(idToEdit, updateKey, updateValue) {
     $.ajax({
       url: `/api/edit`,
@@ -156,6 +171,7 @@ class TodoApp extends React.Component {
     })
   }
 
+  // When you add a todo, it adds it sends it to the database and then will take the returned todos, reassign ids, then set the state
   onAdd(todo) {
     $.ajax({
       url: `/api/add`,
@@ -170,6 +186,7 @@ class TodoApp extends React.Component {
     })
   }
 
+  // This controls changing the text of a todo item, both locally and updating the item in the database
   onItemEdit(itemId, text) {
     let currentState = this;
     let todos = this.state.todos;
@@ -187,6 +204,7 @@ class TodoApp extends React.Component {
     });
   }
 
+  // This deletes an individual todo item, both locally and sends a request to remove it from the database
   onItemDelete(itemId) {
     $.ajax({
       url: `/api/delete`,
@@ -207,6 +225,7 @@ class TodoApp extends React.Component {
     });
   }
 
+  // This is marking a todo as completed, both locally and updating the item in the database
   onItemToggle(itemId) {
     let currentState = this;
     let todos = this.state.todos;
@@ -225,4 +244,5 @@ class TodoApp extends React.Component {
   }
 }
 
+// Call the final render method to display everything
 ReactDOM.render(<TodoApp />, document.getElementById('output'));
