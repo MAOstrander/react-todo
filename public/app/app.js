@@ -56,7 +56,7 @@ class TodoItem extends React.Component {
     }
 
     return (
-      <div className="todo-item">
+      <div className="todo-item" id={props.id}>
         <input type="checkbox" checked={props.completed} onChange={() => {
           props.onItemToggle(props.id);
         }}/>
@@ -109,7 +109,8 @@ class TodoApp extends React.Component {
     super(props);
 
     this.state = {
-      todos: TODOS
+      todos: TODOS,
+      error: ""
     };
 
     this.onAdd = this.onAdd.bind(this);
@@ -121,7 +122,7 @@ class TodoApp extends React.Component {
   }
 
   render () {
-    let { todos } = this.state;
+    let { todos, error } = this.state;
 
     return (
       <div className="todo-app">
@@ -130,6 +131,9 @@ class TodoApp extends React.Component {
                   onItemToggle={this.onItemToggle}
                   onItemEdit={this.onItemEdit}
                   onItemDelete={this.onItemDelete} />
+        <div className="status" style={error ? { fontFamily: "cursive" } : { fontFamily: "sans-serif"}}>
+          <h3>{error ? error : "Ready to go!"}</h3>
+        </div>
       </div>
     );
   }
@@ -165,6 +169,10 @@ class TodoApp extends React.Component {
         this.onUpdate(data);
       }.bind(this),
       error: function (xhr, status, error) {
+        this.setState( {
+          todos: this.state.todos.concat(todo),
+          error: "Dag yo, something went wrong!"
+        })
         console.log("failure", error);
       }.bind(this)
     })
@@ -219,9 +227,7 @@ class TodoApp extends React.Component {
       }
     });
 
-    this.setState({
-      todos: todos
-    });
+    this.setState({ todos });
   }
 }
 
