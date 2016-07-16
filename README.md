@@ -1,16 +1,16 @@
-# __Build a React TO DO Web Application__
+# __Simple React TO DO Web Application__
 
 Try the application online [here](https://mao-react-todo.herokuapp.com/)
-
-## Requirements:
-1. It is built with React and has an API
-2. It uses some persistent database (your choice)
-3. Deployed online
+(Please be considerate of others)
 
 ## Features:
+1. It is built with React and has an API
+1. It uses some persistent database (In this case Mongo)
+1. It is deployed online, through Heroku
 1. As a user I can view my list of TODOs so I know what I have outstanding
-2. As a user I can add a new TODO to remember to do something later
-3. As a user I can complete a TODO to mark it as done and remove it from my list of outstanding items
+1. As a user I can add a new TODO to remember to do something later
+1. As a user I can complete a TODO to mark it as done and remove it from my list of outstanding items
+1. As a user I can edit a TODO to change what it says
 
 ## Installing
 #### Requirements: node, npm, git, terminal/CP access, and mongodb

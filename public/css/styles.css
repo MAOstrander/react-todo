@@ -9,6 +9,10 @@
   width: 500px;
   border: 2px solid black;
 }
+/*Quick status header styling*/
+h3 {
+  text-align: center;
+}
 
 /*Input field*/
 .add-todo input {

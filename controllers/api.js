@@ -5,7 +5,6 @@ function getTasks(req, res) {
   Task.find().exec( (err, doc) => {
     if (err) throw err;
 
-    console.log("Did anything change?");
     const whoops = [
       {id: 0, label: 'Whoops, someone disconnected the database!', completed: false}
     ];
